@@ -11,22 +11,25 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class IndexController {
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private UserMapper userMapper;
 
     @GetMapping("/")
     public String index(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if(cookie.getName().equals("token")){
-                String token = cookie.getValue();
-                User user = userMapper.findBytoken(token);
-                if(user!=null){
-                    request.getSession().setAttribute("user",user);
+        if(cookies !=null&&cookies.length!=0)
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equals("token")){
+                    String token = cookie.getValue();
+                    User user = userMapper.findBytoken(token);
+                    if(user!=null){
+                        request.getSession().setAttribute("user",user);
+                    }
+                    break;
                 }
-                break;
             }
-        }
         return "index";
     }
 }

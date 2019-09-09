@@ -8,6 +8,16 @@ public class User {
     private Long gmtCreate;
     private Long gmtModified;
 
+    public String getAvatorUrl() {
+        return avatorUrl;
+    }
+
+    public void setAvatorUrl(String avatorUrl) {
+        this.avatorUrl = avatorUrl;
+    }
+
+    private String avatorUrl;
+
     public int getId() {
         return id;
     }
