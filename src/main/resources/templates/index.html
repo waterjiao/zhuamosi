@@ -79,7 +79,7 @@
               <span class="text-desc">2个回复 · 31次浏览 · 1小时前</span>
             </div>
           </div>
-          <div class="media"  th:each="question: ${questions}">
+          <div class="media"  th:each="question: ${paginations.questions}">
             <div class="media-left">
               <img class="media-object img-rounded"  th:src="${question.user.avatarUrl}">
             </div>
@@ -99,6 +99,24 @@
           · 选择标签：选择一个或多个标签，用逗号隔开，每个标签不要超过10个字
         </div>
       </div>
+
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li>
+            <a href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li  th:each="page:${paginations.currentPage}" th:class="${paginations.currentPage==page}? 'active':''">
+            <a  th:href="@{/(page=${page})}"  th:text="${page}"></a></li>
+          <li>
+            <a href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
     </div>
 </body>
 </html>

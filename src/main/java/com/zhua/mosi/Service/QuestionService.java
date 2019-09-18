@@ -1,5 +1,6 @@
 package com.zhua.mosi.Service;
 
+import com.zhua.mosi.dto.PaginationDTO;
 import com.zhua.mosi.dto.QuestionDTO;
 import com.zhua.mosi.mapper.QuestionMapper;
 import com.zhua.mosi.mapper.UserMapper;
@@ -24,17 +25,35 @@ public class QuestionService {
     private UserMapper userMapper;
 
 
-    public List<QuestionDTO> list(){
+    public List<QuestionDTO> list() {
         List<Question> questions = questionMapper.list();
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questions) {
             User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question,questionDTO);
+            BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
         return questionDTOList;
     }
 
+    public PaginationDTO listPaging(Integer page, Integer size) {
+        Integer offset = size * (page - 1);
+        List<Question> questions = questionMapper.listPaging(offset, size);
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+        PaginationDTO paginationDTO = new PaginationDTO();
+        for (Question question : questions) {
+            User user = userMapper.findById(question.getCreator());
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question, questionDTO);
+            questionDTO.setUser(user);
+            questionDTOList.add(questionDTO);
+        }
+        paginationDTO.setQuestions(questionDTOList);
+        Integer totalPage = questionMapper.count();
+        paginationDTO.setPagination(totalPage,page,size);
+
+        return paginationDTO;
+    }
 }
